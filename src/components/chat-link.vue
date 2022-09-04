@@ -1,63 +1,74 @@
 <template>
-  <!-- eslint-disable -->
-  <div
-    class="lhggkp7q ln8gz9je rx9719la"
-    style="
-      z-index: 52;
-      transition: none 0s ease 0s;
-      height: 72px;
-      transform: translateY(720px);
-    "
-  >
-    <div tabindex="-1" aria-selected="false" role="row">
-      <div data-testid="cell-frame-container" class="_2nY6U vq6sj">
-        <div class="_2EU3r">
-          <div class="HONz8">
-            <div data-testid="chatlist-status-v3-ring">
-              <div class="_3GlyB" style="height: 49px; width: 49px">
-                <img
-                  src="'@/src/assets/img/299294829_1031810704202606_5112280220383461507_n.jpg"
-                  alt=""
-                  draggable="false"
-                  class="_8hzr9 M0JmA i0jNr"
-                  style="visibility: visible"
-                />
-              </div>
-            </div>
-          </div>
+  <div class="link">
+    <div class="avatar">
+      <img :src="avatar" alt="">
+    </div>
+    <div class="details">
+      <div class="top">
+        <span class="title">{{ title }}</span>
+        <div class="last_msg_date">{{ last_msg.date }}</div>
+      </div>
+      <div class="bottom" v-if="isGroup">
+        <div class="lastMsgStatus">
+          <span class="status" v-if="last_msg.status == 'wait'"></span>
+          <span class="status" v-else-if="last_msg.status == 'sent'">
+            <svg viewBox="0 0 14 18" width="14" height="18" class="">
+              <path
+                fill="currentColor"
+                d="m12.502 5.035-.57-.444a.434.434 0 0 0-.609.076l-6.39 8.198a.38.38 0 0 1-.577.039l-2.614-2.556a.435.435 0 0 0-.614.007l-.505.516a.435.435 0 0 0 .007.614l3.887 3.8a.38.38 0 0 0 .577-.039l7.483-9.602a.435.435 0 0 0-.075-.609z"
+              />
+            </svg>
+          </span>
+          <span class="status" v-else-if="last_msg.status == 'received'">
+            <svg
+              viewBox="0 0 18 18"
+              width="18"
+              height="18"
+              class=""
+            >
+              <path
+                fill="currentColor"
+                d="m17.394 5.035-.57-.444a.434.434 0 0 0-.609.076l-6.39 8.198a.38.38 0 0 1-.577.039l-.427-.388a.381.381 0 0 0-.578.038l-.451.576a.497.497 0 0 0 .043.645l1.575 1.51a.38.38 0 0 0 .577-.039l7.483-9.602a.436.436 0 0 0-.076-.609zm-4.892 0-.57-.444a.434.434 0 0 0-.609.076l-6.39 8.198a.38.38 0 0 1-.577.039l-2.614-2.556a.435.435 0 0 0-.614.007l-.505.516a.435.435 0 0 0 .007.614l3.887 3.8a.38.38 0 0 0 .577-.039l7.483-9.602a.435.435 0 0 0-.075-.609z"
+              />
+            </svg>
+          </span>
+          <span class="status" v-else-if="last_msg.status == 'seen'">
+            <svg viewBox="0 0 18 18" width="18" height="18" class="">
+              <path
+                fill="currentColor"
+                d="m17.394 5.035-.57-.444a.434.434 0 0 0-.609.076l-6.39 8.198a.38.38 0 0 1-.577.039l-.427-.388a.381.381 0 0 0-.578.038l-.451.576a.497.497 0 0 0 .043.645l1.575 1.51a.38.38 0 0 0 .577-.039l7.483-9.602a.436.436 0 0 0-.076-.609zm-4.892 0-.57-.444a.434.434 0 0 0-.609.076l-6.39 8.198a.38.38 0 0 1-.577.039l-2.614-2.556a.435.435 0 0 0-.614.007l-.505.516a.435.435 0 0 0 .007.614l3.887 3.8a.38.38 0 0 0 .577-.039l7.483-9.602a.435.435 0 0 0-.075-.609z"
+              />
+            </svg>
+          </span>
         </div>
-        <div class="_3OvU8">
-          <div role="gridcell" aria-colindex="2" class="_3vPI2">
-            <div class="zoWT4">
-              <span
-                dir="auto"
-                title="Anas Adil"
-                class="ggj6brxn gfz4du6o r7fjleex g0rxnol2 lhj4utae le5p0ye3 l7jjieqr i0jNr"
-                >Anas Adil</span
-              >
-            </div>
-            <div class="_1i_wG">21/08/2022</div>
-          </div>
-          <div class="_37FrU">
-            <div class="_1qB8f">
-              <span
-                class="Hy9nV"
-                title="‪Yqd tkonk‬"
-                data-testid="last-msg-status"
-              >
-                <span
-                  dir="ltr"
-                  class="ggj6brxn gfz4du6o r7fjleex g0rxnol2 lhj4utae le5p0ye3 l7jjieqr i0jNr"
-                  >Yqd tkonk</span
-                >
-              </span>
-            </div>
-            <div role="gridcell" aria-colindex="1" class="_1i_wG">
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
-          </div>
+        <div class="lastMsgSender" v-if="last_msg.type != 'notification'">
+          <span>{{ last_msg.sender }}</span>
+        </div>
+        <div class="lastMsgBody">
+          <span class="lastMsg" v-if="last_msg.type == 'text' || last_msg.type == 'notification'">{{ last_msg.text }}</span>
+          <span class="lastMsg" v-else-if="last_msg.type == 'audio'">{{ last_msg.duration }}</span>
+          <span class="lastMsg" v-else-if="last_msg.type == 'img'">Photo</span>          
+          <span class="lastMsg" v-else-if="last_msg.type == 'video'">Video</span>          
+        </div>
+        <div v-if="isPinned">
+          
+        </div>
+      </div>
+      <div class="bottom" v-else>
+        <div class="lastMsgStatus">
+          <span class="status" v-if="last_msg.status == 'wait'"></span>
+          <span class="status" v-else-if="last_msg.status == 'sent'"></span>
+          <span class="status" v-else-if="last_msg.status == 'received'"></span>
+          <span class="status" v-else-if="last_msg.status == 'seen'"></span>
+        </div>
+        <div class="lastMsgBody">
+          <span class="lastMsg" v-if="last_msg.type == 'text' || last_msg.type == 'notification'">{{ last_msg.text }}</span>
+          <span class="lastMsg" v-else-if="last_msg.type == 'audio'">{{ last_msg.duration }}</span>
+          <span class="lastMsg" v-else-if="last_msg.type == 'img'">Photo</span>          
+          <span class="lastMsg" v-else-if="last_msg.type == 'video'">Video</span>          
+        </div>
+        <div v-if="isPinned">
+
         </div>
       </div>
     </div>
@@ -65,8 +76,17 @@
 </template>
 
 <script>
-/* eslint-disable */
-export default {
-  name: "chat_link",
-};
+import { boolean } from 'yargs';
+
+  export default {
+    name: "chat-link",
+    props: {
+      avatar: String,
+      isGroup: boolean,
+      isPinned: boolean,
+      hasUnreadMessage: boolean,
+      title: String,
+      last_msg: Object,
+    }
+  };
 </script>
