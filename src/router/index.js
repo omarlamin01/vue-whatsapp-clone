@@ -5,24 +5,14 @@ const routes = [
   {
     path: "/",
     name: "home",
-    component: HomeView,
+    //component: ,
     children: [
       {
         path: "/projects/:id",
         name: "project details",
-        component: ProjectDetails,
+        //component: ,
       },
     ],
-  },
-  {
-    path: "/about",
-    name: "about",
-    component: AboutView,
-  },
-  {
-    path: "/help",
-    name: "HelpView",
-    component: HelpView,
   },
 ];
 
