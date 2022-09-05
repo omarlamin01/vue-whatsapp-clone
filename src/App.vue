@@ -7,7 +7,11 @@
 <script>
 /* eslint-disable */
 import chatLink from "./components/chat-link.vue";
-components: {
-  chatLink;
+
+export default {
+  components: {
+    chatLink
+  }
 }
+
 </script>
